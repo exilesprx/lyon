@@ -17,15 +17,19 @@ class GenerateTokenCommand extends Command
     private $auth;
 
     /**
+     * The console command signature.
+     *
      * @var string
      */
-    protected $signature = "lyon:jwt
-        {--u|username : The user's username}
-        {--e|email : The user's email}
-        {--p|password : The user's password}
-        {--t|ttl : Set a custom TTL (in minutes)}";
+    protected $signature = "lyon:token
+        {--e|email : Signifies the username is an email}
+        {--u|username= : The user's username}
+        {--p|password= : The user's password}
+        {--t|ttl= : Set a custom TTL (in minutes)}";
 
     /**
+     * The console command description.
+     *
      * @var string
      */
     protected $description = "Generate a JWT token for the given user.";
@@ -42,21 +46,19 @@ class GenerateTokenCommand extends Command
     }
 
     /**
-     *
+     * Execute the console command.
      */
     public function handle()
     {
         $credentials = [];
 
+        $username = $this->option('username');
+
         if($email = $this->option('email')) {
-            $credentials['email'] = $email;
-        }
-        elseif($username = $this->option('username')) {
-            $credentials['username'] = $username;
+            $credentials['email'] = $username;
         }
         else {
-            $this->error('Email or username not entered. Try again!');
-            return;
+            $credentials['username'] = $username;
         }
 
         $credentials['password'] = $this->option('password');
