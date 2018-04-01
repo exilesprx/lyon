@@ -24,5 +24,12 @@
       "Lyon\\": "Lyon/"
     }
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Lyon\\Providers\\LyonServiceProvider"
+      ]
+    }
+  },
   "minimum-stability": "stable"
 }
