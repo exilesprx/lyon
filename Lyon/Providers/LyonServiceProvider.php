@@ -4,7 +4,7 @@ namespace Lyon\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Lyon\Console\GenerateTokenCommand;
-use Tymon\JWTAuth\JWTAuth;
+use Tymon\JWTAuth\JWTGuard;
 
 /**
  * Class LyonServiceProvider
@@ -28,7 +28,7 @@ class LyonServiceProvider extends ServiceProvider
     protected function registerTokenCommand()
     {
         $this->app->bind('lyon.jwt.token', function() {
-            return new GenerateTokenCommand($this->app->make(JWTAuth::class));
+            return new GenerateTokenCommand($this->app->make(JWTGuard::class));
         });
     }
 }
