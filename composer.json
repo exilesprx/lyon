@@ -1,0 +1,28 @@
+{
+  "name": "lyon/jwt-token-artisan",
+  "description": "A small library that simple produces JWT token using artisan commands.",
+  "type": "package",
+  "keywords": [
+    "lyon",
+    "jwt token",
+    "jwt artisan"
+  ],
+  "license": "MIT",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "Exilesprx",
+      "email": "campbell.andrew86@yahoo.com"
+    }
+  ],
+  "require": {
+    "tymon/jwt-auth": "1.0.0-rc.2",
+    "illuminate/contracts": "^5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lyon\\": "Lyon/"
+    }
+  },
+  "minimum-stability": "stable"
+}
