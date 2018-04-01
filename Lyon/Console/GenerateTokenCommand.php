@@ -3,7 +3,7 @@
 namespace Lyon\Console;
 
 use Illuminate\Console\Command;
-use Tymon\JWTAuth\JWTAuth;
+use Tymon\JWTAuth\JWTGuard;
 
 /**
  * Class GenerateTokenCommand
@@ -12,9 +12,9 @@ use Tymon\JWTAuth\JWTAuth;
 class GenerateTokenCommand extends Command
 {
     /**
-     * @var JWTAuth
+     * @var JWTGuard
      */
-    private $auth;
+    private $guard;
 
     /**
      * The console command signature.
@@ -36,13 +36,13 @@ class GenerateTokenCommand extends Command
 
     /**
      * GenerateTokenCommand constructor.
-     * @param JWTAuth $auth
+     * @param JWTGuard $guard
      */
-    public function __construct(JWTAuth $auth)
+    public function __construct(JWTGuard $guard)
     {
         parent::__construct();
 
-        $this->auth = $auth;
+        $this->guard = $guard;
     }
 
     /**
@@ -65,7 +65,7 @@ class GenerateTokenCommand extends Command
 
         $ttl = $this->option('ttl');
 
-        $token = $this->auth->setTTL($ttl * 60)->attempt($credentials);
+        $token = $this->guard->setTTL($ttl * 60)->attempt($credentials);
 
         if(!$token) {
             $this->error("JWT token could not be created. Invalid credentials.");
