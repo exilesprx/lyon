@@ -17,7 +17,7 @@
   ],
   "require": {
     "tymon/jwt-auth": "1.0.0-rc.2",
-    "illuminate/contracts": "^5.6"
+    "illuminate/contracts": "^5.5"
   },
   "autoload": {
     "psr-4": {
