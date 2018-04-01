@@ -19,7 +19,7 @@ class GenerateTokenCommand extends Command
     /**
      * @var string
      */
-    protected $signature = "jwt:create
+    protected $signature = "lyon:jwt
         {--u|username : The user's username}
         {--e|email : The user's email}
         {--p|password : The user's password}
