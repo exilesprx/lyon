@@ -50,28 +50,46 @@ class GenerateTokenCommand extends Command
      */
     public function handle()
     {
-        $credentials = [];
+        $credentials = $this->getCredentials();
 
-        $username = $this->option('username');
-
-        if($email = $this->option('email')) {
-            $credentials['email'] = $username;
-        }
-        else {
-            $credentials['username'] = $username;
+        if($ttl = $this->option('ttl')) {
+            $this->auth->setTTL($ttl * 60);
         }
 
-        $credentials['password'] = $this->option('password');
+        try {
+            if(!$token = $this->auth->attempt($credentials)) {
+                $this->error("JWT token could not be created. Invalid credentials.");
+                return;
+            }
 
-        $ttl = $this->option('ttl');
-
-        $token = $this->auth->setTTL($ttl * 60)->attempt($credentials);
-
-        if(!$token) {
-            $this->error("JWT token could not be created. Invalid credentials.");
+            $this->info("JWT token created successfully: {$token}");
+        }
+        catch(\Exception $exception) {
+            $this->error("An error occurred: {$exception->getMessage()}");
             return;
         }
+    }
 
-        $this->info("JWT token created successfully: {$token}");
+    /**
+     * Get the credentials array based on the options passed to the command.
+     *
+     * @return array
+     */
+    protected function getCredentials()
+    {
+        $username = $this->option('username');
+        $password = $this->option('password');
+
+        if($email = $this->option('email')) {
+            return [
+                'email'    => $username,
+                'password' => $password
+            ];
+        }
+
+        return [
+            'username' => $username,
+            'password' => $password
+        ];
     }
 }
