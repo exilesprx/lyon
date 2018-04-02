@@ -2,8 +2,10 @@
 
 namespace Lyon\Console;
 
+use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Console\Command;
+use Tymon\JWTAuth\JWTGuard;
 
 /**
  * Class GenerateTokenCommand
@@ -52,19 +54,21 @@ class GenerateTokenCommand extends Command
     {
         $credentials = $this->getCredentials();
 
-        if($ttl = $this->option('ttl')) {
-            $this->auth->setTTL($ttl * 60);
-        }
-
         try {
-            if(!$token = $this->auth->attempt($credentials)) {
+            $guard = $this->getGuard();
+
+            if($ttl = $this->option('ttl')) {
+                $guard->setTTL($ttl);
+            }
+
+            if(!$token = $guard->attempt($credentials)) {
                 $this->error("JWT token could not be created. Invalid credentials.");
                 return;
             }
 
             $this->info("JWT token created successfully: {$token}");
         }
-        catch(\Exception $exception) {
+        catch(Exception $exception) {
             $this->error("An error occurred: {$exception->getMessage()}");
             return;
         }
@@ -91,5 +95,25 @@ class GenerateTokenCommand extends Command
             'username' => $username,
             'password' => $password
         ];
+    }
+
+    /**
+     * Get the JWT guard from the AuthManager.
+     *
+     * @return JWTGuard
+     * @throws Exception
+     */
+    protected function getGuard()
+    {
+        $guard = $this->auth->guard();
+
+        if(!$guard instanceof JWTGuard)
+        {
+            $instance = get_class($guard);
+
+            throw new Exception("Package is not compatible with the current guard: {$instance}");
+        }
+
+        return $guard;
     }
 }
