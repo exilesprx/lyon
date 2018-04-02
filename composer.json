@@ -1,6 +1,6 @@
 {
   "name": "lyon/jwt-token-artisan",
-  "description": "A small library that simple produces JWT token using artisan commands.",
+  "description": "A small library that simply produces JWT token using artisan commands.",
   "type": "package",
   "keywords": [
     "lyon",
@@ -17,7 +17,8 @@
   ],
   "require": {
     "illuminate/contracts": "^5.5",
-    "illuminate/auth": "^5.5"
+    "illuminate/auth": "^5.5",
+    "tymon/jwt-auth": "1.0.0-rc.2"
   },
   "autoload": {
     "psr-4": {
